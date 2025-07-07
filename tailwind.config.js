@@ -8,4 +8,8 @@ export default {
     extend: {},
   },
   plugins: [require('daisyui')],
+  daisyui: {
+    themes: ["dark", "light"], // order matters: "dark" is first = default
+    darkTheme: "dark",         // optional but explicit
+  },
 }
