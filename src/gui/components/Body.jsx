@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Outlet, useNavigate } from 'react-router-dom'
 import Navbar from './Navbar.jsx'
 import Footer from './Footer.jsx'
@@ -14,11 +14,14 @@ const Body = () => {
   const navigate = useNavigate()
   const getUser = async () => {
     try {
-      const res = await axios.get(BASE_URL + '/profile', {withCredentials: true});
-      console.log("res from body get profile call ",res);
-      
+      const res = await axios.get(BASE_URL + '/profile', { withCredentials: true });
+      console.log("res from body get profile call ", res);
+
       dispatch(addUser(res.data));
     } catch (error) {
+      if (error.status == 401) {
+        setErrorMessage(true)
+      }
       navigate('/login')
       console.log(error.message);
 
@@ -26,12 +29,11 @@ const Body = () => {
   }
   useEffect(() => {
     getUser()
-  }, [])
+  },[])
 
   return (
     <div>
       <Navbar />
-      <Loadder />
       <Outlet />
       <Footer />
     </div>

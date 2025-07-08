@@ -1,27 +1,28 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import ThemeToggle from '../common/ThemeToggle'
 import { useDispatch, useSelector } from 'react-redux'
 import { removeUser } from '../../utils/userSlice';
 import axios from 'axios';
 import { BASE_URL } from '../../utils/constaints';
-import { Link, Navigate, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const navbar = () => {
-    const user = useSelector((store) => store.user);
+    const currentUser = useSelector((store) => store.user);
+    const  [user, setUser] = useState(currentUser);
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    console.log(user);
     const handleLogout = async () => {
         try {
             dispatch(removeUser())
-            const res =await  axios.post(BASE_URL + "/logout",{},{ withCredentials: true})
-            console.log(res);
+            await  axios.post(BASE_URL + "/logout",{},{ withCredentials: true})
             navigate("/login")
         } catch (error) {
             console.log(error.message);
         }
     }
-
+useEffect(()=>{
+    setUser(currentUser)
+},[currentUser])
     
     return (
         <div className="navbar bg-base-300 shadow-sm">
@@ -56,7 +57,10 @@ const navbar = () => {
                                 <div className="w-10 rounded-full">
                                     <img
                                         alt="Tailwind CSS Navbar component"
-                                        src={user.data?.photoUrl} />
+                                        src={user?.photoUrl} 
+                                        // src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRlA9S19kdxOC5NKPh33s4hnN2tuRxgP9SA8aHO3FtziFyWuOk5UaYN3nyMHGrbaSUJ3BA&usqp=CAU'
+
+                                        />
                                 </div>
                             </div>
                             <ul
@@ -68,7 +72,8 @@ const navbar = () => {
                                         <span className="badge">New</span>
                                     </Link>
                                 </li>
-                                <li><a>Settings</a></li>
+                                <li><Link to={'/requests'}>Requests</Link></li>
+                                <li><Link to={'/connections'}>Connections</Link></li>
                                 <li onClick={handleLogout}><a>Logout</a></li>
                             </ul>
                         </div>
