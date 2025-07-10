@@ -19,17 +19,14 @@ const Requests = () => {
 
                 dispatch(addRequests([]))
             }
-            console.log(res?.data?.data);
         } catch (error) {
             console.log(error);
 
         }
     }
     const reviewRequest = async (status, id) => {
-        console.log("request id: ", id);
         try {
             const res = await axios.post(BASE_URL+ "/request/review/"+status+"/"+id, {},{withCredentials: true});
-            console.log(res?.data);
             dispatch(removeRequest(id));
         } catch (error) {
             console.log(error);

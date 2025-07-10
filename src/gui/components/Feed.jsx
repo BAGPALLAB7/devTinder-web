@@ -13,13 +13,15 @@ const Feed = () => {
     const feeds = useSelector((store) => store.feed);
     const navigate = useNavigate()
     useEffect(() => {
+        console.log("feed calls");
+        
         if (!user) {
             return navigate('/login')
         }
-        if (!feeds) {
+        else{
             getFeed()
         }
-    }, [user, feeds])
+    }, [])
     const getFeed = async () => {
         try {
             const res = await axios.get(BASE_URL + '/feed', { withCredentials: true });

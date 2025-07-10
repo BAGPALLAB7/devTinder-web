@@ -10,21 +10,18 @@ import { useDispatch } from 'react-redux'
 import { addUser } from '../../utils/userSlice.js'
 
 const Body = () => {
+  const [errorMessage, setErrorMessage] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate()
   const getUser = async () => {
     try {
       const res = await axios.get(BASE_URL + '/profile', { withCredentials: true });
-      console.log("res from body get profile call ", res);
-
       dispatch(addUser(res.data));
     } catch (error) {
       if (error.status == 401) {
         setErrorMessage(true)
       }
       navigate('/login')
-      console.log(error.message);
-
     }
   }
   useEffect(() => {

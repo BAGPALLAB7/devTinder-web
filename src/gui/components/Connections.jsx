@@ -12,18 +12,18 @@ const Connections = () => {
             const res = await axios.get(BASE_URL + '/user/connections', { withCredentials: true })
             if (res?.data?.data) {
                 dispatch(addConnections(res?.data?.data))
+            }else{
+                dispatch(addConnections([]))
             }
             console.log(res?.data?.data);
 
-
         } catch (error) {
-            console.log(error.essage);
-
+            console.log(error.message);
         }
     }
     useEffect(() => {
         getConnections()
-    }, [])
+    },[])
 
     if (!connections || connections?.length === 0) {
         return (

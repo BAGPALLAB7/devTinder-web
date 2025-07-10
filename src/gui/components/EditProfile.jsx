@@ -11,17 +11,20 @@ const EditProfile = ({ user }) => {
     const [firstName, setFirstName] = useState(User?.firstName);
     const [lastName, setLastName] = useState(User?.lastName);
     const [about, setAbout] = useState(User?.about);
-    const [age, setAge] = useState(User?.age);
+    const [age, setAge] = useState(User?.age || "");
     const [gender, setGender] = useState(User?.gender);
 
     const [skills, setSkills] = useState(User?.skills);
     const [photoUrl, setPhotoUrl] = useState(User?.photoUrl);
     const [error, setError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState(false);
+
     const [showToast, setShowToast] = useState(false);
     const dispatch = useDispatch();
 
     const handleEditProfile = async () => {
         try {
+            setError(false)
             const res = await axios.patch(BASE_URL + '/profile/edit', {
                 firstName, lastName, age: parseInt(age), gender: (gender)?.toLowerCase(), about, photoUrl, skills
             }, { withCredentials: true })
@@ -32,7 +35,8 @@ const EditProfile = ({ user }) => {
                 setShowToast(false)
             }, 3000)
         } catch (error) {
-            setError(error?.message ? error.message : "Somethign went wrong!")
+            setError(true)
+            setErrorMessage(error?.response?.data ? error?.response?.data :error?.message)
             console.log(error);
         }
     }
