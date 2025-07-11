@@ -1,6 +1,5 @@
 
 import { BrowserRouter, Route, Routes } from "react-router-dom"
-import Navbar from "./gui/components/navbar"
 import Body from "./gui/components/Body"
 import Login from "./gui/components/Login"
 import Profile from "./gui/components/Profile"
